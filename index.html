@@ -4,22 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>국내 게임사 28개사 공시 요약</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
 :root{--bg:#f8fafc;--white:#fff;--text:#1e293b;--sub:#475569;--muted:#94a3b8;--line:#e2e8f0;--blue:#2563eb;--green:#059669;--red:#dc2626;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);}
-.container{max-width:960px;margin:0 auto;padding:40px 24px 60px;}
+.ct{max-width:960px;margin:0 auto;padding:40px 24px 60px;}
 h1{font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px;}
-.subtitle{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:32px;}
-.overview{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;border-radius:16px;padding:24px 28px;margin-bottom:28px;}
-.overview h2{font-size:1rem;font-weight:700;margin-bottom:12px;color:#60a5fa;}
-.overview table{width:100%;border-collapse:collapse;}
-.overview td{padding:4px 8px;font-size:.78rem;color:#cbd5e1;vertical-align:top;}
-.overview td:first-child{font-weight:600;color:#fff;width:120px;}
+.sub{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:32px;}
+.ov{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;border-radius:16px;padding:24px 28px;margin-bottom:28px;}
+.ov h2{font-size:1rem;font-weight:700;margin-bottom:12px;color:#60a5fa;}
+.ov table{width:100%;border-collapse:collapse;}
+.ov td{padding:4px 8px;font-size:.78rem;color:#cbd5e1;vertical-align:top;}
+.ov td:first-child{font-weight:600;color:#fff;width:120px;}
 .items{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
-.item-chip{background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;font-size:.7rem;color:#93c5fd;}
-.section{background:var(--white);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;overflow:hidden;}
+.ic{background:rgba(255,255,255,.1);padding:3px 10px;border-radius:6px;font-size:.7rem;color:#93c5fd;}
+.sec{background:var(--white);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;overflow:hidden;}
 .sh{display:flex;align-items:center;gap:12px;padding:16px 22px;cursor:pointer;user-select:none;}
 .sh:hover{background:var(--bg);}
 .sn{width:28px;height:28px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;}
@@ -28,35 +29,38 @@ h1{font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px;}
 .sa.open{transform:rotate(180deg);}
 .sb{display:none;padding:0 22px 20px;font-size:.8rem;line-height:1.8;color:var(--sub);}
 .sb.show{display:block;}
-.metric-tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:.7rem;white-space:nowrap;}
-.metric-tbl th{background:#f1f5f9;padding:5px 8px;text-align:center;font-weight:600;border-bottom:2px solid var(--line);}
-.metric-tbl td{padding:4px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-variant-numeric:tabular-nums;}
-.metric-tbl td:first-child{text-align:left;font-weight:600;color:var(--text);}
+.cr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0;}
+@media(max-width:700px){.cr{grid-template-columns:1fr;}}
+.cb{background:var(--bg);border-radius:10px;padding:12px;border:1px solid var(--line);}
+.mt{width:100%;border-collapse:collapse;margin:12px 0;font-size:.7rem;white-space:nowrap;}
+.mt th{background:#f1f5f9;padding:5px 8px;text-align:center;font-weight:600;border-bottom:2px solid var(--line);}
+.mt td{padding:4px 8px;text-align:right;border-bottom:1px solid #f1f5f9;font-variant-numeric:tabular-nums;}
+.mt td:first-child{text-align:left;font-weight:600;color:var(--text);}
 .up{color:var(--green);font-weight:600;}
 .dn{color:var(--red);font-weight:600;}
-.tbl-wrap{overflow-x:auto;}
-.ma-list{margin:10px 0;}
-.ma-row{padding:4px 0;border-bottom:1px solid #f1f5f9;font-size:.72rem;line-height:1.5;}
-.ma-row a{color:var(--blue);text-decoration:none;font-weight:600;}
-.ma-row a:hover{text-decoration:underline;}
-.ma-detail{color:var(--muted);font-size:.65rem;display:block;}
+.tw{overflow-x:auto;}
+.ml{margin:10px 0;}
+.mr{padding:4px 0;border-bottom:1px solid #f1f5f9;font-size:.72rem;line-height:1.5;}
+.mr a{color:var(--blue);text-decoration:none;font-weight:600;}
+.mr a:hover{text-decoration:underline;}
+.md{color:var(--muted);font-size:.65rem;display:block;}
 .note{font-size:.72rem;color:var(--muted);margin-top:8px;padding:8px 12px;background:#f8fafc;border:1px solid var(--line);border-radius:6px;line-height:1.6;}
-.conclusion{background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;border-radius:14px;padding:22px 26px;margin-bottom:16px;}
-.conclusion h3{font-size:.95rem;font-weight:800;margin-bottom:8px;}
-.conclusion p{font-size:.82rem;line-height:1.7;color:#bfdbfe;}
-.ref-links{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-top:28px;}
-.ref-links h3{font-size:.9rem;font-weight:700;margin-bottom:10px;}
-.ref-links a{display:block;padding:6px 0;color:var(--blue);text-decoration:none;font-size:.8rem;font-weight:500;}
-.ref-links a:hover{text-decoration:underline;}
-.ref-desc{font-size:.68rem;color:var(--muted);margin-left:16px;margin-bottom:4px;}
+.concl{background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;border-radius:14px;padding:22px 26px;margin-bottom:16px;}
+.concl h3{font-size:.95rem;font-weight:800;margin-bottom:8px;}
+.concl p{font-size:.82rem;line-height:1.7;color:#bfdbfe;}
+.rl{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-top:28px;}
+.rl h3{font-size:.9rem;font-weight:700;margin-bottom:10px;}
+.rl a{display:block;padding:6px 0;color:var(--blue);text-decoration:none;font-size:.8rem;font-weight:500;}
+.rl a:hover{text-decoration:underline;}
+.rd{font-size:.68rem;color:var(--muted);margin-left:16px;margin-bottom:4px;}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="ct">
 <h1>국내 게임사 28개사 공시 요약</h1>
-<p class="subtitle">2022년~2025년 · 연결기준 · v5 · 2026-04-21</p>
+<p class="sub">2022년~2025년 · 연결기준 · v5 · 2026-04-21</p>
 
-<div class="overview">
+<div class="ov">
 <h2>데이터 개요</h2>
 <table>
 <tr><td>대상</td><td>국내 상장 게임사 28개사 (넥슨·그라비티 해외상장 포함)</td></tr>
@@ -65,49 +69,76 @@ h1{font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:4px;}
 </table>
 <div style="margin-top:10px;font-size:.75rem;color:#94a3b8;">분기별 재무 5개 항목</div>
 <div class="items">
-<span class="item-chip">매출액 — DART 분기보고서 추출</span>
-<span class="item-chip">영업이익 — DART 분기보고서 추출</span>
-<span class="item-chip">인건비 — 급여+퇴직급여+복리후생비+주식보상 합산, 수기 입력</span>
-<span class="item-chip">광고선전비(마케팅비) — 분기보고서 참고 수기 입력</span>
-<span class="item-chip">현금성자산 — 현금및현금성자산+단기금융상품+유동FVPL 합산</span>
+<span class="ic">매출액 — DART 분기보고서 추출</span>
+<span class="ic">영업이익 — DART 분기보고서 추출</span>
+<span class="ic">인건비 — 급여+퇴직급여+복리후생비+주식보상 합산, 수기 입력</span>
+<span class="ic">광고선전비(마케팅비) — 분기보고서 참고 수기 입력</span>
+<span class="ic">현금성자산 — 현금및현금성자산+단기금융상품+유동FVPL 합산</span>
 </div>
 </div>
 
-<div class="section"><div class="sh" onclick="toggle(1)"><div class="sn">1</div><div class="st">국내 게임산업 28개사 합산 매출은 22년 대비 12.5% 증가, 영업이익은 17.4% 증가</div><span class="sa" id="a1">▼</span></div>
-<div class="sb" id="b1"><div class="tbl-wrap"><table class="metric-tbl"><tr><th>28개사 합산</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>18조 1,728억</td><td class="dn">-</td><td>17조 8,471억</td><td class="dn">-1.8%</td><td>19조 1,160억</td><td class="up">7.1%</td><td>20조 4,487억</td><td class="up">7.0%</td></tr><tr><td>영업이익</td><td>2조 7,502억</td><td class="dn">-</td><td>2조 4,083억</td><td class="dn">-12.4%</td><td>3조 507억</td><td class="up">26.7%</td><td>3조 2,282억</td><td class="up">5.8%</td></tr><tr><td>영업이익률</td><td>15.1%</td><td></td><td>13.5%</td><td></td><td>16.0%</td><td></td><td>15.8%</td><td></td></tr><tr><td>인건비</td><td>4조 5,753억</td><td class="dn">-</td><td>4조 8,830억</td><td class="up">6.7%</td><td>5조 5,187억</td><td class="up">13.0%</td><td>5조 7,602억</td><td class="up">4.4%</td></tr><tr><td>인건비율</td><td>25.2%</td><td></td><td>27.4%</td><td></td><td>28.9%</td><td></td><td>28.2%</td><td></td></tr><tr><td>광고선전비</td><td>1조 8,884억</td><td class="dn">-</td><td>1조 6,224억</td><td class="dn">-14.1%</td><td>1조 5,725억</td><td class="dn">-3.1%</td><td>1조 9,127억</td><td class="up">21.6%</td></tr><tr><td>마케팅비율</td><td>10.4%</td><td></td><td>9.1%</td><td></td><td>8.2%</td><td></td><td>9.4%</td><td></td></tr><tr><td>현금성자산</td><td>14조 4,090억</td><td class="dn">-</td><td>11조 6,174억</td><td class="dn">-19.4%</td><td>14조 1,916억</td><td class="up">22.2%</td><td>16조 4,953억</td><td class="up">16.2%</td></tr></table></div></div></div>
+<div class="sec"><div class="sh" onclick="toggle(1)"><div class="sn">1</div><div class="st">국내 게임산업 28개사 합산 매출은 22년 대비 25년 기준 12.5% 증가, 영업이익은 17.4% 증가</div><span class="sa" id="a1">▼</span></div>
+<div class="sb" id="b1">
+<div class="cr"><div class="cb"><canvas id="c1a" height="200"></canvas></div><div class="cb"><canvas id="c1b" height="200"></canvas></div></div>
+<div class="cr"><div class="cb"><canvas id="c1c" height="180"></canvas></div><div class="cb"><canvas id="c1d" height="180"></canvas></div></div>
+<div class="tw"><table class="mt"><tr><th>28개사 합산</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>18조 1,728억</td><td class="dn">-</td><td>17조 8,471억</td><td class="dn">-1.8%</td><td>19조 1,160억</td><td class="up">7.1%</td><td>20조 4,487억</td><td class="up">7.0%</td></tr><tr><td>영업이익</td><td>2조 7,502억</td><td class="dn">-</td><td>2조 4,083억</td><td class="dn">-12.4%</td><td>3조 507억</td><td class="up">26.7%</td><td>3조 2,282억</td><td class="up">5.8%</td></tr><tr><td>영업이익률</td><td>15.1%</td><td class=""></td><td>13.5%</td><td class=""></td><td>16.0%</td><td class=""></td><td>15.8%</td><td class=""></td></tr><tr><td>인건비</td><td>4조 5,753억</td><td class="dn">-</td><td>4조 8,830억</td><td class="up">6.7%</td><td>5조 5,187억</td><td class="up">13.0%</td><td>5조 7,602억</td><td class="up">4.4%</td></tr><tr><td>인건비율</td><td>25.2%</td><td class=""></td><td>27.4%</td><td class=""></td><td>28.9%</td><td class=""></td><td>28.2%</td><td class=""></td></tr><tr><td>광고선전비</td><td>1조 8,884억</td><td class="dn">-</td><td>1조 6,224억</td><td class="dn">-14.1%</td><td>1조 5,725억</td><td class="dn">-3.1%</td><td>1조 9,127억</td><td class="up">21.6%</td></tr><tr><td>마케팅비율</td><td>10.4%</td><td class=""></td><td>9.1%</td><td class=""></td><td>8.2%</td><td class=""></td><td>9.4%</td><td class=""></td></tr><tr><td>현금성자산</td><td>14조 4,090억</td><td class="dn">-</td><td>11조 6,174억</td><td class="dn">-19.4%</td><td>14조 1,916억</td><td class="up">22.2%</td><td>16조 4,953억</td><td class="up">16.2%</td></tr></table></div>
+</div></div>
 
-<div class="section"><div class="sh" onclick="toggle(2)"><div class="sn">2</div><div class="st">다만, 이는 매출 상위 4개사(넥슨·크래프톤·넷마블·NHN)의 손익 증가에 기인하며, 나머지 24개사는 매출 10.8% 감소·영업이익 53.9% 감소</div><span class="sa" id="a2">▼</span></div>
+<div class="sec"><div class="sh" onclick="toggle(2)"><div class="sn">2</div><div class="st">다만, 이는 매출 상위 4개사(넥슨·크래프톤·넷마블·NHN)의 22년 대비 25년 손익 증가에 기인하며, 나머지 24개사는 매출 10.8% 감소·영업이익 53.9% 감소</div><span class="sa" id="a2">▼</span></div>
 <div class="sb" id="b2">
-<p style="font-size:.82rem;font-weight:600;margin-bottom:8px;">▎ 상위 4개사 (넥슨 · 크래프톤 · 넷마블 · NHN)</p>
-<div class="tbl-wrap"><table class="metric-tbl"><tr><th>상위 4개사</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>10조 369억</td><td class="dn">-</td><td>10조 768억</td><td class="up">0.4%</td><td>11조 8,518억</td><td class="up">17.6%</td><td>13조 1,883억</td><td class="up">11.3%</td></tr><tr><td>영업이익</td><td>1조 6,449억</td><td class="dn">-</td><td>1조 7,504억</td><td class="up">6.4%</td><td>2조 4,705억</td><td class="up">41.1%</td><td>2조 7,191억</td><td class="up">10.1%</td></tr><tr><td>영업이익률</td><td>16.4%</td><td></td><td>17.4%</td><td></td><td>20.8%</td><td></td><td>20.6%</td><td></td></tr><tr><td>인건비</td><td>2조 3,025억</td><td class="dn">-</td><td>2조 5,253억</td><td class="up">9.7%</td><td>3조 513억</td><td class="up">20.8%</td><td>3조 3,171억</td><td class="up">8.7%</td></tr><tr><td>인건비율</td><td>22.9%</td><td></td><td>25.1%</td><td></td><td>25.7%</td><td></td><td>25.2%</td><td></td></tr><tr><td>광고선전비</td><td>1조 287억</td><td class="dn">-</td><td>9,477억</td><td class="dn">-7.9%</td><td>9,103억</td><td class="dn">-3.9%</td><td>1조 1,424억</td><td class="up">25.5%</td></tr><tr><td>마케팅비율</td><td>10.2%</td><td></td><td>9.4%</td><td></td><td>7.7%</td><td></td><td>8.7%</td><td></td></tr><tr><td>현금성자산</td><td>8조 3,434억</td><td class="dn">-</td><td>6조 9,724억</td><td class="dn">-16.4%</td><td>8조 3,952억</td><td class="up">20.4%</td><td>10조 4,603억</td><td class="up">24.6%</td></tr></table></div>
-<p style="font-size:.82rem;font-weight:600;margin:16px 0 8px;">▎ 나머지 24개사</p>
-<div class="tbl-wrap"><table class="metric-tbl"><tr><th>나머지 24개사</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>8조 1,359억</td><td class="dn">-</td><td>7조 7,703억</td><td class="dn">-4.5%</td><td>7조 2,642억</td><td class="dn">-6.5%</td><td>7조 2,604억</td><td class="dn">-0.1%</td></tr><tr><td>영업이익</td><td>1조 1,053억</td><td class="dn">-</td><td>6,579억</td><td class="dn">-40.5%</td><td>5,802억</td><td class="dn">-11.8%</td><td>5,092억</td><td class="dn">-12.3%</td></tr><tr><td>영업이익률</td><td>13.6%</td><td></td><td>8.5%</td><td></td><td>8.0%</td><td></td><td>7.0%</td><td></td></tr><tr><td>인건비</td><td>2조 2,729억</td><td class="dn">-</td><td>2조 3,576억</td><td class="up">3.7%</td><td>2조 4,673억</td><td class="up">4.7%</td><td>2조 4,431억</td><td class="dn">-1.0%</td></tr><tr><td>인건비율</td><td>27.9%</td><td></td><td>30.3%</td><td></td><td>34.0%</td><td></td><td>33.6%</td><td></td></tr><tr><td>광고선전비</td><td>8,597억</td><td class="dn">-</td><td>6,748억</td><td class="dn">-21.5%</td><td>6,622억</td><td class="dn">-1.9%</td><td>7,702억</td><td class="up">16.3%</td></tr><tr><td>마케팅비율</td><td>10.6%</td><td></td><td>8.7%</td><td></td><td>9.1%</td><td></td><td>10.6%</td><td></td></tr><tr><td>현금성자산</td><td>6조 656억</td><td class="dn">-</td><td>4조 6,451억</td><td class="dn">-23.4%</td><td>5조 7,965억</td><td class="up">24.8%</td><td>6조 350억</td><td class="up">4.1%</td></tr></table></div>
+<p style="font-size:.82rem;font-weight:600;margin-bottom:8px;">▎ 상위 4개사</p>
+<div class="cr"><div class="cb"><canvas id="c2a" height="180"></canvas></div><div class="cb"><canvas id="c2b" height="180"></canvas></div></div>
+<p style="font-size:.82rem;font-weight:600;margin:12px 0 8px;">▎ 나머지 24개사</p>
+<div class="cr"><div class="cb"><canvas id="c2c" height="180"></canvas></div><div class="cb"><canvas id="c2d" height="180"></canvas></div></div>
 </div></div>
 
-<div class="section"><div class="sh" onclick="toggle(3)"><div class="sn">3</div><div class="st">상위 4개사는 기존작의 안정적 서비스와 신작 흥행으로 마케팅비 규모를 유지하면서 손익 증가 달성. 인건비 +44.1% 증가는 M&A로 종속회사 확대 영향</div><span class="sa" id="a3">▼</span></div>
+<div class="sec"><div class="sh" onclick="toggle(3)"><div class="sn">3</div><div class="st">상위 4개사는 기존작의 안정적 서비스와 신작 흥행으로 마케팅비 규모를 유지하면서 22년 대비 25년 손익 증가 달성. 인건비 +44.1% 증가는 M&A로 종속회사 확대 영향</div><span class="sa" id="a3">▼</span></div>
 <div class="sb" id="b3">
-<div class="tbl-wrap"><table class="metric-tbl"><tr><th>상위 4개사</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>10조 369억</td><td class="dn">-</td><td>10조 768억</td><td class="up">0.4%</td><td>11조 8,518억</td><td class="up">17.6%</td><td>13조 1,883억</td><td class="up">11.3%</td></tr><tr><td>영업이익</td><td>1조 6,449억</td><td class="dn">-</td><td>1조 7,504억</td><td class="up">6.4%</td><td>2조 4,705억</td><td class="up">41.1%</td><td>2조 7,191억</td><td class="up">10.1%</td></tr><tr><td>영업이익률</td><td>16.4%</td><td></td><td>17.4%</td><td></td><td>20.8%</td><td></td><td>20.6%</td><td></td></tr><tr><td>인건비</td><td>2조 3,025억</td><td class="dn">-</td><td>2조 5,253억</td><td class="up">9.7%</td><td>3조 513억</td><td class="up">20.8%</td><td>3조 3,171억</td><td class="up">8.7%</td></tr><tr><td>인건비율</td><td>22.9%</td><td></td><td>25.1%</td><td></td><td>25.7%</td><td></td><td>25.2%</td><td></td></tr><tr><td>광고선전비</td><td>1조 287억</td><td class="dn">-</td><td>9,477억</td><td class="dn">-7.9%</td><td>9,103억</td><td class="dn">-3.9%</td><td>1조 1,424억</td><td class="up">25.5%</td></tr><tr><td>마케팅비율</td><td>10.2%</td><td></td><td>9.4%</td><td></td><td>7.7%</td><td></td><td>8.7%</td><td></td></tr><tr><td>현금성자산</td><td>8조 3,434억</td><td class="dn">-</td><td>6조 9,724억</td><td class="dn">-16.4%</td><td>8조 3,952억</td><td class="up">20.4%</td><td>10조 4,603억</td><td class="up">24.6%</td></tr></table></div>
-<p class="note">마케팅비 22년 1조 287억 → 25년 1조 1,424억 (+11.1%) 규모 유지. 매출 +31.4% 증가로 영업이익률 16.4%→20.6% 개선. 인건비 +44.1%는 M&A 종속회사 인력 증가가 주요 원인.</p>
+<div class="cr"><div class="cb"><canvas id="c3a" height="200"></canvas></div><div class="cb"><canvas id="c3b" height="200"></canvas></div></div>
+<div class="cr"><div class="cb"><canvas id="c3c" height="180"></canvas></div><div class="cb"><canvas id="c3d" height="180"></canvas></div></div>
+<div class="cr"><div class="cb"><canvas id="c3e" height="180"></canvas></div><div class="cb"></div></div>
+<div class="tw"><table class="mt"><tr><th>상위 4개사</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>10조 369억</td><td class="dn">-</td><td>10조 768억</td><td class="up">0.4%</td><td>11조 8,518억</td><td class="up">17.6%</td><td>13조 1,883억</td><td class="up">11.3%</td></tr><tr><td>영업이익</td><td>1조 6,449억</td><td class="dn">-</td><td>1조 7,504억</td><td class="up">6.4%</td><td>2조 4,705억</td><td class="up">41.1%</td><td>2조 7,191억</td><td class="up">10.1%</td></tr><tr><td>영업이익률</td><td>16.4%</td><td class=""></td><td>17.4%</td><td class=""></td><td>20.8%</td><td class=""></td><td>20.6%</td><td class=""></td></tr><tr><td>인건비</td><td>2조 3,025억</td><td class="dn">-</td><td>2조 5,253억</td><td class="up">9.7%</td><td>3조 513억</td><td class="up">20.8%</td><td>3조 3,171억</td><td class="up">8.7%</td></tr><tr><td>인건비율</td><td>22.9%</td><td class=""></td><td>25.1%</td><td class=""></td><td>25.7%</td><td class=""></td><td>25.2%</td><td class=""></td></tr><tr><td>광고선전비</td><td>1조 287억</td><td class="dn">-</td><td>9,477억</td><td class="dn">-7.9%</td><td>9,103억</td><td class="dn">-3.9%</td><td>1조 1,424억</td><td class="up">25.5%</td></tr><tr><td>마케팅비율</td><td>10.2%</td><td class=""></td><td>9.4%</td><td class=""></td><td>7.7%</td><td class=""></td><td>8.7%</td><td class=""></td></tr><tr><td>현금성자산</td><td>8조 3,434억</td><td class="dn">-</td><td>6조 9,724억</td><td class="dn">-16.4%</td><td>8조 3,952억</td><td class="up">20.4%</td><td>10조 4,603억</td><td class="up">24.6%</td></tr></table></div>
+<p class="note">마케팅비 22년 1조 287억 → 25년 1조 1,424억 (+11.1%) 규모 유지. 매출 +31.4% 증가로 영업이익률 16.4%→20.6% 개선. 인건비 +44.1%는 M&A 종속회사 인력 증가 영향.</p>
 <h4 style="font-size:.82rem;font-weight:700;margin:18px 0 8px;border-bottom:2px solid #e2e8f0;padding-bottom:4px;">주요 인수/투자 내역 (2022~2026)</h4>
-<p style="font-size:.78rem;font-weight:700;margin:12px 0 4px;">넥슨</p><div class="ma-list"><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20220106084653" target="_blank">AGBO(루소 형제 제작사)</a> — 지분투자 $5억(지분 49.21%)<span class="ma-detail">2022-01 | 크로스미디어 IP 전략. 최대주주.</span></div><div class="ma-row"><b>Hasbro(완구/엔터)</b> — 지분투자 $~10억(추정)<span class="ma-detail">2022-02 | IP 제휴 투자. 이후 일부 정리.</span></div><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20260414140222" target="_blank">CLI Group B.V.(유럽 산업솔루션)</a> — 인수 미공개<span class="ma-detail">2026-02 | 유럽 기업 인수. 포트폴리오 다각화.</span></div></div>
-<p style="font-size:.78rem;font-weight:700;margin:12px 0 4px;">크래프톤</p><div class="ma-list"><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20211014095832" target="_blank">언노운월즈(서브노티카 개발사)</a> — 인수 ~5,858억원($5억)<span class="ma-detail">2021-10 | 미국 게임사 100% 인수. 해양 생존 IP 확보.</span></div><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20220211090407" target="_blank">5minlab(오분랩, 스매시레전드)</a> — 인수 238억원(언아웃 최대 2,000억)<span class="ma-detail">2022-02 | 스매시레전드 개발사 100% 인수. 언아웃 구조.</span></div><div class="ma-row"><b>비트원어스</b> — 합병 미공개<span class="ma-detail">2022-05 | 게임 개발사 흡수합병.</span></div><div class="ma-row"><a href="https://www.etnews.com/20240812000202" target="_blank">탱고 게임웍스+Hi-Fi Rush IP</a> — 인수 미공개<span class="ma-detail">2024-08 | MS 폐업 일본 스튜디오+IP 인수.</span></div><div class="ma-row"><a href="https://www.sedaily.com/NewsView/2DE92F08GU" target="_blank">스푼랩스(숏폼 드라마)</a> — 지분투자 1,200억원<span class="ma-detail">2024-08 | 비게임 최대 투자. 오디오·숏폼 OTT 플랫폼.</span></div><div class="ma-row"><a href="https://www.fetv.co.kr/news/article.html?no=194949" target="_blank">ADK그룹(일본 광고/애니메이션)</a> — 인수 ~7,103억원(¥750억)<span class="ma-detail">2025-06 | 크래프톤 역대 최대 M&A. 콘텐츠 사업 확장.</span></div><div class="ma-row"><a href="https://www.apnews.kr/news/articleView.html?idxno=3034533" target="_blank">넵튠(게임 지주사)</a> — 지분인수 1,650억원<span class="ma-detail">2025-07 | 카카오게임즈에서 39.37% 인수. 넵튠 최대주주(42.53%).</span></div><div class="ma-row"><a href="https://www.newsis.com/view/NISX20250725_0003267106" target="_blank">일레븐스아워게임즈(Last Epoch)</a> — 인수 ~1,324억원($9,597만)<span class="ma-detail">2025-07 | 북미 ARPG 개발사 100% 인수.</span></div></div>
-<p style="font-size:.78rem;font-weight:700;margin:12px 0 4px;">넷마블</p><div class="ma-list"><div class="ma-row"><a href="https://www.newspost.kr/news/articleView.html?idxno=93992" target="_blank">스핀엑스(SpinX, 소셜카지노)</a> — 인수 2조 5,130억원<span class="ma-detail">2021-08 | 소셜카지노 게임사 100% 인수. 역대 국내 게임사 최대 M&A.</span></div><div class="ma-row"><b>Ludia(캐나다, Jam City 자회사)</b> — 인수 ~1,925억원($1.65억)<span class="ma-detail">2021-09 | 자회사 잼시티를 통해 캐나다 모바일게임사 루디아 100% 인수.</span></div><div class="ma-row"><b>카밤(Kabam)→Netmarble US 합병</b> — 합병 미공개<span class="ma-detail">2022-04 | 영미권 넷마블 통합. 2015~2017년 약 8,458억 투입한 카밤 통합 완료.</span></div><div class="ma-row"><a href="https://www.bloter.net/news/articleView.html?idxno=657500" target="_blank">하이브 지분 매각①</a> — 지분매각 ~5,235억원(250만주)<span class="ma-detail">2023-11 | 블록딜 방식. 지분율 18.1%→12.1%.</span></div><div class="ma-row"><b>하이브 지분 매각②(PRS)</b> — 지분매각 ~2,199억원(2.66%)<span class="ma-detail">2024-05 | 주가수익스와프 방식 처분.</span></div><div class="ma-row"><a href="https://www.ebn.co.kr/news/articleView.html?idxno=1703440" target="_blank">넷마블네오</a> — 합병 포괄적 주식교환<span class="ma-detail">2025-04 | 핵심 개발자회사 100% 자회사화. 상장 계획 철회.</span></div><div class="ma-row"><b>하이브 지분 매각③</b> — 지분매각 ~3,208억원(88만주)<span class="ma-detail">2026-02 | 지속 감축. 보유 지분율 9.44%로 하락.</span></div><div class="ma-row"><a href="https://www.biztribune.co.kr/news/articleView.html?idxno=351233" target="_blank">코웨이 주식 매입</a> — 지분추가인수 1,500억원(1년 분할)<span class="ma-detail">2026-04 | 계열사 지분 매입으로 지배구조 안정화. 현재 26%.</span></div></div>
+<p style="font-size:.78rem;font-weight:700;margin:12px 0 4px;">넥슨</p><div class="ml"><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20220106084653" target="_blank">AGBO(루소 형제 제작사)</a> — 지분투자 $5억(지분 49.21%)<span class="ma-detail">2022-01 | 크로스미디어 IP 전략. 최대주주.</span></div><div class="ma-row"><b>Hasbro(완구/엔터)</b> — 지분투자 $~10억(추정)<span class="ma-detail">2022-02 | IP 제휴 투자. 이후 일부 정리.</span></div><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20240911170549" target="_blank">민트로켓(Mintrocket)</a> — 자회사전환 100%<span class="ma-detail">2024-09 | 데이브 더 다이버 개발팀. 2022년 출범 후 완전 자회사로 전환.</span></div><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20260414140222" target="_blank">CLI Group B.V.(유럽 산업솔루션)</a> — 인수 미공개<span class="ma-detail">2026-02 | 유럽 기업 인수. 포트폴리오 다각화.</span></div></div>
+<p style="font-size:.78rem;font-weight:700;margin:12px 0 4px;">크래프톤</p><div class="ml"><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20211014095832" target="_blank">언노운월즈(서브노티카 개발사)</a> — 인수 ~5,858억원($5억)<span class="ma-detail">2021-10 | 미국 게임사 100% 인수. 해양 생존 IP 확보.</span></div><div class="ma-row"><a href="https://zdnet.co.kr/view/?no=20220211090407" target="_blank">5minlab(오분랩, 스매시레전드)</a> — 인수 238억원(언아웃 최대 2,000억)<span class="ma-detail">2022-02 | 스매시레전드 개발사 100% 인수. 언아웃 구조.</span></div><div class="ma-row"><b>비트원어스</b> — 합병 미공개<span class="ma-detail">2022-05 | 게임 개발사 흡수합병.</span></div><div class="ma-row"><a href="https://www.etnews.com/20240812000202" target="_blank">탱고 게임웍스+Hi-Fi Rush IP</a> — 인수 미공개<span class="ma-detail">2024-08 | MS 폐업 일본 스튜디오+IP 인수.</span></div><div class="ma-row"><a href="https://www.sedaily.com/NewsView/2DE92F08GU" target="_blank">스푼랩스(숏폼 드라마)</a> — 지분투자 1,200억원<span class="ma-detail">2024-08 | 비게임 최대 투자. 오디오·숏폼 OTT 플랫폼.</span></div><div class="ma-row"><a href="https://www.fetv.co.kr/news/article.html?no=194949" target="_blank">ADK그룹(일본 광고/애니메이션)</a> — 인수 ~7,103억원(¥750억)<span class="ma-detail">2025-06 | 크래프톤 역대 최대 M&A. 콘텐츠 사업 확장.</span></div><div class="ma-row"><a href="https://www.apnews.kr/news/articleView.html?idxno=3034533" target="_blank">넵튠(게임 지주사)</a> — 지분인수 1,650억원<span class="ma-detail">2025-07 | 카카오게임즈에서 39.37% 인수. 넵튠 최대주주(42.53%).</span></div><div class="ma-row"><a href="https://www.newsis.com/view/NISX20250725_0003267106" target="_blank">일레븐스아워게임즈(Last Epoch)</a> — 인수 ~1,324억원($9,597만)<span class="ma-detail">2025-07 | 북미 ARPG 개발사 100% 인수.</span></div></div>
+<p style="font-size:.78rem;font-weight:700;margin:12px 0 4px;">넷마블</p><div class="ml"><div class="ma-row"><a href="https://www.newspost.kr/news/articleView.html?idxno=93992" target="_blank">스핀엑스(SpinX, 소셜카지노)</a> — 인수 2조 5,130억원<span class="ma-detail">2021-08 | 소셜카지노 게임사 100% 인수. 역대 국내 게임사 최대 M&A.</span></div><div class="ma-row"><b>Ludia(캐나다, Jam City 자회사)</b> — 인수 ~1,925억원($1.65억)<span class="ma-detail">2021-09 | 자회사 잼시티를 통해 캐나다 모바일게임사 루디아 100% 인수.</span></div><div class="ma-row"><b>카밤(Kabam)→Netmarble US 합병</b> — 합병 미공개<span class="ma-detail">2022-04 | 영미권 넷마블 통합. 2015~2017년 약 8,458억 투입한 카밤 통합 완료.</span></div><div class="ma-row"><a href="https://www.ebn.co.kr/news/articleView.html?idxno=1703440" target="_blank">넷마블네오</a> — 합병 포괄적 주식교환<span class="ma-detail">2025-04 | 핵심 개발자회사 100% 자회사화. 상장 계획 철회.</span></div><div class="ma-row"><a href="https://www.biztribune.co.kr/news/articleView.html?idxno=351233" target="_blank">코웨이 주식 매입</a> — 지분추가인수 1,500억원(1년 분할)<span class="ma-detail">2026-04 | 계열사 지분 매입으로 지배구조 안정화. 현재 26%.</span></div></div>
 </div></div>
 
-<div class="section"><div class="sh" onclick="toggle(4)"><div class="sn">4</div><div class="st">나머지 24개사는 인건비 +7.5%, 마케팅비 -10.4%로 비용이 크게 증가하지 않았으나, 매출 10.8% 감소로 영업이익이 감소</div><span class="sa" id="a4">▼</span></div>
+<div class="sec"><div class="sh" onclick="toggle(4)"><div class="sn">4</div><div class="st">나머지 24개사는 22년 대비 25년 인건비 +7.5%, 마케팅비 -10.4%로 비용이 크게 증가하지 않았으나, 매출 10.8% 감소로 영업이익 감소</div><span class="sa" id="a4">▼</span></div>
 <div class="sb" id="b4">
-<div class="tbl-wrap"><table class="metric-tbl"><tr><th>나머지 24개사</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>8조 1,359억</td><td class="dn">-</td><td>7조 7,703억</td><td class="dn">-4.5%</td><td>7조 2,642억</td><td class="dn">-6.5%</td><td>7조 2,604억</td><td class="dn">-0.1%</td></tr><tr><td>영업이익</td><td>1조 1,053억</td><td class="dn">-</td><td>6,579억</td><td class="dn">-40.5%</td><td>5,802억</td><td class="dn">-11.8%</td><td>5,092억</td><td class="dn">-12.3%</td></tr><tr><td>영업이익률</td><td>13.6%</td><td></td><td>8.5%</td><td></td><td>8.0%</td><td></td><td>7.0%</td><td></td></tr><tr><td>인건비</td><td>2조 2,729억</td><td class="dn">-</td><td>2조 3,576억</td><td class="up">3.7%</td><td>2조 4,673억</td><td class="up">4.7%</td><td>2조 4,431억</td><td class="dn">-1.0%</td></tr><tr><td>인건비율</td><td>27.9%</td><td></td><td>30.3%</td><td></td><td>34.0%</td><td></td><td>33.6%</td><td></td></tr><tr><td>광고선전비</td><td>8,597억</td><td class="dn">-</td><td>6,748억</td><td class="dn">-21.5%</td><td>6,622억</td><td class="dn">-1.9%</td><td>7,702억</td><td class="up">16.3%</td></tr><tr><td>마케팅비율</td><td>10.6%</td><td></td><td>8.7%</td><td></td><td>9.1%</td><td></td><td>10.6%</td><td></td></tr><tr><td>현금성자산</td><td>6조 656억</td><td class="dn">-</td><td>4조 6,451억</td><td class="dn">-23.4%</td><td>5조 7,965억</td><td class="up">24.8%</td><td>6조 350억</td><td class="up">4.1%</td></tr></table></div>
-<p class="note">인건비와 마케팅비가 22년 대비 크게 증가하지 않았음에도, 매출이 10.8% 감소하면서 영업이익이 53.9% 감소. 인건비율 27.9%→33.6% 상승으로 수익성 악화. 기존 라이브 게임의 자연 감소와 신작 흥행 부진이 매출 하락의 배경.</p>
+<div class="cr"><div class="cb"><canvas id="c4a" height="200"></canvas></div><div class="cb"><canvas id="c4b" height="200"></canvas></div></div>
+<div class="cr"><div class="cb"><canvas id="c4c" height="180"></canvas></div><div class="cb"><canvas id="c4d" height="180"></canvas></div></div>
+<div class="cr"><div class="cb"><canvas id="c4e" height="180"></canvas></div><div class="cb"></div></div>
+<div class="tw"><table class="mt"><tr><th>나머지 24개사</th><th>2022</th><th>YoY</th><th>2023</th><th>YoY</th><th>2024</th><th>YoY</th><th>2025</th><th>YoY</th></tr><tr><td>매출액</td><td>8조 1,359억</td><td class="dn">-</td><td>7조 7,703억</td><td class="dn">-4.5%</td><td>7조 2,642억</td><td class="dn">-6.5%</td><td>7조 2,604억</td><td class="dn">-0.1%</td></tr><tr><td>영업이익</td><td>1조 1,053억</td><td class="dn">-</td><td>6,579억</td><td class="dn">-40.5%</td><td>5,802억</td><td class="dn">-11.8%</td><td>5,092억</td><td class="dn">-12.3%</td></tr><tr><td>영업이익률</td><td>13.6%</td><td class=""></td><td>8.5%</td><td class=""></td><td>8.0%</td><td class=""></td><td>7.0%</td><td class=""></td></tr><tr><td>인건비</td><td>2조 2,729억</td><td class="dn">-</td><td>2조 3,576억</td><td class="up">3.7%</td><td>2조 4,673억</td><td class="up">4.7%</td><td>2조 4,431억</td><td class="dn">-1.0%</td></tr><tr><td>인건비율</td><td>27.9%</td><td class=""></td><td>30.3%</td><td class=""></td><td>34.0%</td><td class=""></td><td>33.6%</td><td class=""></td></tr><tr><td>광고선전비</td><td>8,597억</td><td class="dn">-</td><td>6,748억</td><td class="dn">-21.5%</td><td>6,622억</td><td class="dn">-1.9%</td><td>7,702억</td><td class="up">16.3%</td></tr><tr><td>마케팅비율</td><td>10.6%</td><td class=""></td><td>8.7%</td><td class=""></td><td>9.1%</td><td class=""></td><td>10.6%</td><td class=""></td></tr><tr><td>현금성자산</td><td>6조 656억</td><td class="dn">-</td><td>4조 6,451억</td><td class="dn">-23.4%</td><td>5조 7,965억</td><td class="up">24.8%</td><td>6조 350억</td><td class="up">4.1%</td></tr></table></div>
+<p class="note">인건비와 마케팅비가 22년 대비 크게 증가하지 않았음에도, 매출이 10.8% 감소하면서 영업이익이 53.9% 감소. 인건비율 27.9%→33.6% 상승으로 수익성 악화.</p>
 </div></div>
 
-<div class="conclusion"><h3>5. 요약</h3><p>국내 게임산업 전체로 보면 28개사 합산 매출은 증가하였으나, 상위 4개사와 나머지 24개사 간의 양극화가 심화되고 있다. 상위사는 글로벌 신작 흥행과 적극적 M&A로 실적이 크게 개선된 반면, 나머지 기업들은 매출 감소와 수익성 악화가 지속되고 있다.</p></div>
+<div class="concl"><h3>5. 요약</h3><p>국내 게임산업 전체로 보면 28개사 합산 매출은 증가하였으나, 상위 4개사와 나머지 24개사 간의 양극화가 심화되고 있다. 상위사는 라이브 게임의 안정적 운영과 글로벌 신작 흥행, 적극적 M&A 등으로 실적이 크게 개선된 반면, 나머지 기업들은 매출 감소와 수익성 악화가 지속되고 있다.</p></div>
 
-<div class="ref-links"><h3>참고 링크</h3>
-<a href="https://vonkim.github.io/game-dashboard/" target="_blank">📊 28개사 재무 대시보드 (전체 합산 + 회사별 상세)</a><div class="ref-desc">분기별 재무정보·신작정보·인수/투자 이력·관련 뉴스·조직구조를 회사별로 확인</div>
-<a href="https://vonkim.github.io/game-top4/" target="_blank">📈 상위 4개사 vs 나머지 24개사 비교</a><div class="ref-desc">넥슨·크래프톤·넷마블·NHN 합산 실적과 나머지 24개사 합산 실적 비교</div>
-<a href="https://raw.githubusercontent.com/vonkim/game-database/master/data.json" target="_blank">💾 28개사 DB (JSON 다운로드)</a><div class="ref-desc">공시 데이터베이스 원본. AI(ChatGPT·Claude 등)에 첨부하여 맞춤 분석 가능</div>
+<div class="rl"><h3>참고 링크</h3>
+<a href="https://vonkim.github.io/game-dashboard/" target="_blank">📊 28개사 재무 대시보드 (전체 합산 + 회사별 상세)</a><div class="rd">분기별 재무정보·신작정보·인수/투자 이력·관련 뉴스·조직구조를 회사별로 확인</div>
+<a href="https://vonkim.github.io/game-top4/" target="_blank">📈 상위 4개사 vs 나머지 24개사 비교</a><div class="rd">넥슨·크래프톤·넷마블·NHN 합산 실적과 나머지 24개사 합산 실적 비교</div>
+<a href="https://raw.githubusercontent.com/vonkim/game-database/master/data.json" target="_blank">💾 28개사 DB (JSON 다운로드)</a><div class="rd">공시 데이터베이스 원본. AI에 첨부하여 분석 가능</div>
 </div>
 </div>
-<script>function toggle(n){document.getElementById('b'+n).classList.toggle('show');document.getElementById('a'+n).classList.toggle('open');}</script>
+
+<script>
+const CD={"labels":["22Q1","22Q2","22Q3","22Q4","23Q1","23Q2","23Q3","23Q4","24Q1","24Q2","24Q3","24Q4","25Q1","25Q2","25Q3","25Q4"],"all":{"rev":[46344,44487,46129,44767,45583,43124,46482,43281,46286,48909,51306,44659,49088,49714,51413,54271],"oi":[10947,6143,6977,3434,8626,4534,7967,2956,7819,9832,9965,2892,10404,8478,9962,3438],"labor":[10931,11334,11363,12125,11851,12410,11961,12607,13047,13089,13913,15138,13558,13733,13668,16643],"ad":[3897,4882,4780,5325,3503,3930,4138,4653,3121,3262,4092,5250,3783,4206,4629,6509],"cash":[151495,146029,150553,144090,134998,129458,129604,116174,135640,131347,137277,141916,160589,151239,156682,164953],"laborR":[23.6,25.5,24.6,27.1,26,28.8,25.7,29.1,28.2,26.8,27.1,33.9,27.6,27.6,26.6,30.7],"adR":[8.4,11,10.4,11.9,7.7,9.1,8.9,10.7,6.7,6.7,8,11.8,7.7,8.5,9,12]},"top4":{"rev":[25486,24029,25860,24994,26846,22990,26166,24766,28246,31647,31954,26671,31802,31340,33069,35672],"oi":[6732,3435,4033,2249,6896,3191,5328,2090,6020,8692,7400,2593,9298,7337,8195,2360],"labor":[5514,5648,5942,5921,5905,6247,6421,6681,7090,7286,7868,8269,7659,7603,7585,10325],"ad":[2043,2465,2631,3148,1899,2104,2572,2901,1835,1733,2231,3304,2044,2309,2855,4216],"cash":[90178,86973,87421,83434,72406,70714,72684,69724,81015,77855,79747,83952,104145,97263,96022,104603],"laborR":[21.6,23.5,23,23.7,22,27.2,24.5,27,25.1,23,24.6,31,24.1,24.3,22.9,28.9],"adR":[8,10.3,10.2,12.6,7.1,9.2,9.8,11.7,6.5,5.5,7,12.4,6.4,7.4,8.6,11.8]},"rest24":{"rev":[20858,20459,20269,19773,18737,20134,20316,18515,18040,17262,19353,17988,17286,18375,18344,18599],"oi":[4216,2708,2945,1185,1730,1343,2639,866,1799,1140,2564,299,1106,1140,1767,1078],"labor":[5417,5686,5421,6204,5947,6164,5540,5926,5956,5804,6045,6869,5899,6130,6084,6318],"ad":[1854,2418,2148,2177,1604,1826,1567,1751,1286,1530,1861,1946,1739,1897,1774,2292],"cash":[61318,59056,63133,60656,62592,58744,56919,46451,54625,53491,57530,57965,56445,53976,60660,60350],"laborR":[26,27.8,26.7,31.4,31.7,30.6,27.3,32,33,33.6,31.2,38.2,34.1,33.4,33.2,34],"adR":[8.9,11.8,10.6,11,8.6,9.1,7.7,9.5,7.1,8.9,9.6,10.8,10.1,10.3,9.7,12.3]}};
+const L=CD.labels;
+function toggle(n){const b=document.getElementById('b'+n);const a=document.getElementById('a'+n);const wasOpen=b.classList.contains('show');b.classList.toggle('show');a.classList.toggle('open');if(!wasOpen){if(n===1)draw1();if(n===2)draw2();if(n===3)draw3();if(n===4)draw4();}}
+
+function mkChart(id,type,datasets,opts){const el=document.getElementById(id);if(!el)return;if(el._c)el._c.destroy();el._c=new Chart(el,{type,data:{labels:L,datasets},options:opts});}
+function revOi(id,d,t){mkChart(id,'bar',[{label:'매출(억)',data:d.rev,backgroundColor:'rgba(37,99,235,.6)',borderRadius:4,order:2},{label:'영업이익(억)',data:d.oi,type:'line',borderColor:'#059669',borderWidth:2,pointRadius:2,tension:.3,order:1}],{responsive:true,plugins:{title:{display:true,text:t},legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{ticks:{callback:v=>v>9999?(v/10000).toFixed(1)+'조':v.toLocaleString()+'억'}}}});}
+function ratio(id,d,t){mkChart(id,'line',[{label:'인건비율(%)',data:d.laborR,borderColor:'#ef4444',borderWidth:2,pointRadius:2,tension:.3},{label:'마케팅비율(%)',data:d.adR,borderColor:'#f59e0b',borderWidth:2,pointRadius:2,tension:.3}],{responsive:true,plugins:{title:{display:true,text:t},legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{min:0,ticks:{callback:v=>v+'%'}}}});}
+function cost(id,d,t){mkChart(id,'bar',[{label:'인건비(억)',data:d.labor,backgroundColor:'rgba(239,68,68,.55)',borderRadius:4},{label:'마케팅비(억)',data:d.ad,backgroundColor:'rgba(245,158,11,.55)',borderRadius:4}],{responsive:true,plugins:{title:{display:true,text:t},legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{ticks:{callback:v=>v.toLocaleString()+'억'}}}});}
+function cash(id,d,t){mkChart(id,'bar',[{label:'현금성자산(억)',data:d.cash,backgroundColor:'rgba(124,58,237,.5)',borderRadius:4}],{responsive:true,plugins:{title:{display:true,text:t},legend:{display:false}},scales:{y:{ticks:{callback:v=>v>9999?(v/10000).toFixed(1)+'조':v.toLocaleString()+'억'}}}});}
+function oiRate(id,d,t){const r=d.rev.map((v,i)=>v?+(d.oi[i]*100/v).toFixed(1):null);mkChart(id,'line',[{label:'영업이익률(%)',data:r,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.1)',fill:true,borderWidth:2,pointRadius:2,tension:.3}],{responsive:true,plugins:{title:{display:true,text:t},legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'%'}}}});}
+
+function draw1(){revOi('c1a',CD.all,'28개사 합산 매출/영업이익');ratio('c1b',CD.all,'합산 인건비율/마케팅비율');cost('c1c',CD.all,'합산 인건비/마케팅비 금액');cash('c1d',CD.all,'합산 현금성자산');}
+function draw2(){revOi('c2a',CD.top4,'상위 4개사 매출/영업이익');revOi('c2c',CD.rest24,'나머지 24개사 매출/영업이익');ratio('c2b',CD.top4,'상위 4개사 인건비율/마케팅비율');ratio('c2d',CD.rest24,'나머지 24개사 인건비율/마케팅비율');}
+function draw3(){revOi('c3a',CD.top4,'상위 4개사 매출/영업이익');ratio('c3b',CD.top4,'상위 4개사 인건비율/마케팅비율');cost('c3c',CD.top4,'상위 4개사 인건비/마케팅비 금액');cash('c3d',CD.top4,'상위 4개사 현금성자산');oiRate('c3e',CD.top4,'상위 4개사 영업이익률');}
+function draw4(){revOi('c4a',CD.rest24,'나머지 24개사 매출/영업이익');ratio('c4b',CD.rest24,'나머지 24개사 인건비율/마케팅비율');cost('c4c',CD.rest24,'나머지 24개사 인건비/마케팅비 금액');cash('c4d',CD.rest24,'나머지 24개사 현금성자산');oiRate('c4e',CD.rest24,'나머지 24개사 영업이익률');}
+</script>
 </body>
 </html>
